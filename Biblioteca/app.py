@@ -149,7 +149,7 @@ def registrofuncionario():
 @app.route("/cadastrar_livro", methods=["GET", "POST"])
 @login_required
 def cadastrar_livro():
-    if not current_user.funcionario is None:
+    if current_user.funcionario is None:
         flash("Acesso negado. Somente funcionários podem cadastrar livros.")
         return redirect(url_for("login"))  # Redireciona para a página inicial ou outra página apropriada
 
