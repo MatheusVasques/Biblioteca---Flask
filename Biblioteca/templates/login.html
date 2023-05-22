@@ -1,0 +1,65 @@
+<title>Login</title>
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+/>
+
+{% with messages = get_flashed_messages() %} {% if messages %}
+<ul class="flashes">
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %} {% endwith %}
+
+<div class="container d-flex justify-content-center align-items-center">
+  <div class="card" style="width: 30rem">
+    <img
+      src="{{ url_for('static', filename='img/livros.jpg') }}"
+      class="container d-flex justify-content-center align-items-center"
+      alt="..."
+      style="width: 20rem"
+    />
+    <div class="card-body">
+      <div class="p-3 mb-2 bg-primary-subtle text-emphasis-primary">
+        <h1>Login</h1>
+      </div>
+      <form action="{{ url_for('login') }}" method="POST">
+        <div class="row justify-content-center">
+          <label for="email" class="form-label"><strong>Email</strong></label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            class="form-control"
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div class="row justify-content-center">
+          <label for="password" class="form-label"
+            ><strong>Senha</strong></label
+          >
+          <input
+            type="password"
+            name="senha"
+            id="s"
+            class="form-control"
+            placeholder="Senha"
+            required
+          />
+        </div>
+        <div class="row justify-content-center">
+          <input type="submit" class="btn btn-primary" value="Login" />
+        </div>
+        <div class="container d-flex justify-content-center align-items-center">
+          <p><a href="{{ url_for('registroaluno') }}">Registre-se</a></p>
+        </div>
+      </form>
+      <p><a href="{{ url_for('registrofuncionario') }}">Acesso Restrito</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

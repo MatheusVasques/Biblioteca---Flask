@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Livros Alugados</title>
+  </head>
+  <body>
+    <h1>Livros Alugados</h1>
+    <ul>
+      {% for livro in livros %}
+      <li>{{ livro.títuloLivro }} - {{ livro.editora }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

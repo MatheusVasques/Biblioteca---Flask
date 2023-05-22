@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Livros</title>
+  </head>
+  <body>
+    <form method="POST" action="{{ url_for('cadastrar_livro') }}">
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo" required />
+      <br />
+      <label for="editora">Editora:</label>
+      <input type="text" id="editora" name="editora" required />
+      <br />
+      <label for="ano">Ano:</label>
+      <input type="text" id="ano" name="ano" required />
+      <br />
+      <label for="quantidade">Quantidade:</label>
+      <input type="number" id="quantidade" name="quantidade" required />
+      <br />
+      <input type="submit" value="Cadastrar" />
+    </form>
+  </body>
+</html>
