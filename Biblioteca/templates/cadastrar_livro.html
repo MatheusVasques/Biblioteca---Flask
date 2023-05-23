@@ -7,18 +7,26 @@
     <title>Livros</title>
   </head>
   <body>
-    <form method="POST" action="{{ url_for('cadastrar_livro') }}">
+    <form action="{{ url_for('cadastrar_livro') }}" method="POST">
       <label for="titulo">Título:</label>
-      <input type="text" id="titulo" name="titulo" required />
+      <input type="text" id="titulo" name="tituloLivro" required />
       <br />
       <label for="editora">Editora:</label>
       <input type="text" id="editora" name="editora" required />
       <br />
       <label for="ano">Ano:</label>
-      <input type="text" id="ano" name="ano" required />
+      <input type="text" id="ano" name="anoLivro" required />
       <br />
       <label for="quantidade">Quantidade:</label>
-      <input type="number" id="quantidade" name="quantidade" required />
+      <input type="number" id="quantidadeLivro" name="quantidade" required />
+      <br />
+      <label for="qtde_disponiveis">Quantidade Disponível:</label>
+      <input
+        type="number"
+        id="qtde_disponiveis"
+        name="qtdeLivDisponiveis"
+        required
+      />
       <br />
       <input type="submit" value="Cadastrar" />
     </form>

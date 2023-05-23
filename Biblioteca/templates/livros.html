@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Livros</title>
+  </head>
+  <body>
+    <h1>Lista de livros</h1>
+
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Ano</th>
+        <th>Quantidade Total</th>
+        <th>Quantidade Disponível</th>
+        <th>Aluno ID</th>
+      </tr>
+
+      {% for livro in livros %}
+      <tr>
+        <td>{{ livro.idLivro }}</td>
+        <td>{{ livro.tituloLivro }}</td>
+        <td>{{ livro.editora }}</td>
+        <td>{{ livro.anoLivro }}</td>
+        <td>{{ livro.quantidadeLivros }}</td>
+        <td>{{ livro.qtdeLivDisponiveis }}</td>
+        <td>{{ livro.aluno_id }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

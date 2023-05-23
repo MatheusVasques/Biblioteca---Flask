@@ -154,20 +154,29 @@ def cadastrar_livro():
         return redirect(url_for("login"))  # Redireciona para a página inicial ou outra página apropriada
 
     if request.method == "POST":
-        titulo = request.form["titulo"]
+        titulo = request.form["tituloLivro"]
         editora = request.form["editora"]
-        ano = request.form["ano"]
+        ano = request.form["anoLivro"]  # Corrigido para 'anoLivro'
         quantidade = request.form["quantidade"]
+        qtde_disponiveis = request.form['qtdeLivDisponiveis']
 
-        livro = Livro(titulo=titulo, editora=editora, ano=ano, quantidade=quantidade)
+      # Crie e salve o objeto Livro com os valores fornecidos
+        livro = Livro(tituloLivro=titulo, editora=editora, anoLivro=ano, quantidadeLivros=quantidade, qtdeLivDisponiveis=qtde_disponiveis)
         db.session.add(livro)
         db.session.commit()
 
         flash("Livro cadastrado com sucesso!")
         return redirect(url_for("livros"))
 
+
     return render_template("cadastrar_livro.html")
 
+# Exibe página com todos os livros cadastrados
+@app.route("/livros")
+@login_required
+def livros():
+    livros = Livro.query.all()
+    return render_template("livros.html", livros=livros)
 
 #Colocar site no ar
 if __name__ == "__main__":
