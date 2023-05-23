@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alugar Livro</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Alugar Livro</h1>
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="alert alert-info">
+        <ul class="list-unstyled">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %} {% endwith %}
+      <form action="{{ url_for('alugar') }}" method="POST">
+        <div class="form-group">
+          <label for="livro_id">Livro:</label>
+          <select id="livro_id" name="livro_id" class="form-control">
+            {% for livro in livros %}
+            <option value="{{ livro.id }}">{{ livro.tituloLivro }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="aluno_id">Aluno:</label>
+          <select id="aluno_id" name="aluno_id" class="form-control">
+            {% for aluno in alunos %}
+            <option value="{{ aluno.id }}">{{ aluno.user.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Alugar</button>
+      </form>
+    </div>
+  </body>
+</html>

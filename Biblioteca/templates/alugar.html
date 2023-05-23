@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Alugar Livro</title>
+</head>
+<body>
+  <h1>Alugar Livro</h1>
+
+  <form action="/alugar_livro/{{ livro_id }}" method="POST">
+    <label for="aluno">Selecione o locatário:</label>
+    <select name="aluno" id="aluno">
+      {% for aluno in alunos %}
+        <option value="{{ aluno.id }}">{{ aluno.nome }}</option>
+      {% endfor %}
+    </select>
+    <br><br>
+    <input type="submit" value="Alugar">
+  </form>
+</body>
+</html>

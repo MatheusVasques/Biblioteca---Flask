@@ -26,8 +26,21 @@ class Livro(db.Model):
     anoLivro = db.Column(db.Integer, nullable=False)
     quantidadeLivros = db.Column(db.Integer, nullable=False)
     qtdeLivDisponiveis = db.Column(db.Integer, nullable=False)
+    #aluno = db.relationship('Aluno', backref=db.backref('livros_alugados', lazy=True))
+
+class LivrosAlugados(Livro):
+    __tablename__ = "livros_alugados"
+    id = db.Column(db.Integer, primary_key=True)
     aluno_id = db.Column(db.Integer, db.ForeignKey('alunos.id'))
     aluno = db.relationship('Aluno', backref=db.backref('livros_alugados', lazy=True))
+    livro_id = db.Column(db.Integer, db.ForeignKey('livros.idLivro'))
+    livro = db.relationship('Livro', backref=db.backref('alugado_por', lazy=True))
+    nomeLocador = db.Column(db.String(100), nullable=False)
+    dataDevolucao = db.Column(db.String(100), nullable=False)
+    __mapper_args__ = {
+        'inherit_condition': id == Livro.idLivro  # Adicione essa linha para definir a relação de herança
+    }
+    
 
 class User(db.Model, UserMixin):
     __tablename__ = "users"
@@ -57,6 +70,9 @@ class Funcionario(db.Model):
     nomeFuncionario = db.Column(db.String(100))
     emailFuncionario = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
+
 
 #Criar primeira página do site
 
@@ -120,7 +136,7 @@ def registroaluno():
 @login_required
 def livros_alugados():
     user = User.query.get(current_user.id) # Carrega o usuário atual pelo ID
-    livros_alugados = user.aluno.livros_alugados # Obtém a lista de livros alugados do usuário
+    livros_alugados = LivrosAlugados.query.filter_by(aluno=user.aluno).all() # Obtém a lista de livros alugados do usuário
     return render_template("livros_alugados.html", livros=livros_alugados)
 
 # Registro funcionário
@@ -177,6 +193,45 @@ def cadastrar_livro():
 def livros():
     livros = Livro.query.all()
     return render_template("livros.html", livros=livros)
+    
+@app.route("/alugar", methods=["GET", "POST"])
+@login_required
+def alugar():
+    if current_user.funcionario is None:
+        flash("Acesso negado. Somente funcionários podem cadastrar livros.")
+        return redirect(url_for("login"))  # Redireciona para a página inicial ou outra página apropriada
+
+    livros = Livro.query.all()
+    alunos = Aluno.query.all()
+        
+
+    if request.method == "POST":
+
+        livro_id = request.form.get('livro_id')  # Obtém o livro_id do formulário
+        livro = Livro.query.get(livro_id)
+        if livro:
+            if livro.qtdeLivDisponiveis > 0:
+                aluno_id = request.form.get('aluno_id')  # Obtém o aluno_id do formulário
+                aluno = Aluno.query.get(aluno_id)
+                if aluno:
+                    livro_alugado = LivrosAlugados(livro=livro, aluno=aluno)
+                    livro.qtdeLivDisponiveis -= 1
+
+                    db.session.add(livro_alugado)
+                    db.session.commit()
+
+                    flash("Livro alugado com sucesso!")
+                else:
+                    flash("Aluno não encontrado.")
+            else:
+                flash("Não há mais cópias disponíveis deste livro.")
+        else:
+            flash("Livro não encontrado.")
+
+        return redirect(url_for('livros'))
+
+    return render_template("formulario_aluguel.html", livros=livros, alunos=alunos)
+
 
 #Colocar site no ar
 if __name__ == "__main__":
