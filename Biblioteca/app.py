@@ -238,3 +238,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all() #chamada para criar tabela no banco de dados
     app.run(debug=True)
+    
