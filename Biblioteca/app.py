@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
-
+from datetime import date, datetime, timedelta
 
 
 app = Flask(__name__)
@@ -27,19 +27,23 @@ class Livro(db.Model):
     quantidadeLivros = db.Column(db.Integer, nullable=False)
     qtdeLivDisponiveis = db.Column(db.Integer, nullable=False)
     #aluno = db.relationship('Aluno', backref=db.backref('livros_alugados', lazy=True))
-
-class LivrosAlugados(Livro):
+''' flask shell
+from app db, User                                             
+from app import db, User
+user = User()
+user.name = "Pedro"
+user.email = "pedro@a.com"
+user.password = "32123"
+db.session.add(user)
+db.session.commit()
+'''
+class LivrosAlugados(db.Model):
     __tablename__ = "livros_alugados"
     id = db.Column(db.Integer, primary_key=True)
     aluno_id = db.Column(db.Integer, db.ForeignKey('alunos.id'))
-    aluno = db.relationship('Aluno', backref=db.backref('livros_alugados', lazy=True))
     livro_id = db.Column(db.Integer, db.ForeignKey('livros.idLivro'))
-    livro = db.relationship('Livro', backref=db.backref('alugado_por', lazy=True))
-    nomeLocador = db.Column(db.String(100), nullable=False)
-    dataDevolucao = db.Column(db.String(100), nullable=False)
-    __mapper_args__ = {
-        'inherit_condition': id == Livro.idLivro  # Adicione essa linha para definir a relação de herança
-    }
+    dataAluguel = db.Column(db.String(100), nullable=False)
+    dataDevolucao = db.Column(db.String(100), nullable=True)
     
 
 class User(db.Model, UserMixin):
@@ -207,9 +211,8 @@ def alugar():
     if request.method == "POST":
         livro_id = request.form.get('livro_id')
         aluno_id = request.form.get('aluno_id')
-        titulo_livro = request.form.get('tituloLivro')  # Captura o valor do campo títuloLivro
 
-        if not livro_id or not aluno_id or not titulo_livro: #titulo tá sendo nulo! Como resolver?
+        if not livro_id or not aluno_id: #titulo tá sendo nulo! Como resolver?
             flash("Selecione um livro e um aluno.")
             return redirect(url_for('alugar'))
 
@@ -218,13 +221,14 @@ def alugar():
             if livro.qtdeLivDisponiveis > 0:
                 aluno = Aluno.query.get(aluno_id)
                 if aluno:
-                    livro_alugado = LivrosAlugados(livro=livro, aluno=aluno)
+                    livros_alugados = LivrosAlugados()
+                    livros_alugados.aluno_id = aluno_id
+                    livros_alugados.livro_id = livro_id
+                    livros_alugados.dataAluguel = date.today()
+                    db.session.add(livros_alugados)
+                    db.session.commit()
+
                     livro.qtdeLivDisponiveis -= 1
-
-                    # Atribui o valor do campo títuloLivro ao objeto livro_alugado
-                    livro_alugado.tituloLivro = titulo_livro
-
-                    db.session.add(livro_alugado)
                     db.session.commit()
 
                     flash("Livro alugado com sucesso!")
