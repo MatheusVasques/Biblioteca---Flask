@@ -199,29 +199,30 @@ def livros():
 def alugar():
     if current_user.funcionario is None:
         flash("Acesso negado. Somente funcionários podem cadastrar livros.")
-        return redirect(url_for("login"))  # Redireciona para a página inicial ou outra página apropriada
+        return redirect(url_for("login"))
 
     livros = Livro.query.all()
     alunos = Aluno.query.all()
-        
 
     if request.method == "POST":
-
-        livro_id = request.form.get('livro_id')  # Obtém o livro_id do formulário
+        livro_id = request.form.get('livro_id')
         aluno_id = request.form.get('aluno_id')
+        titulo_livro = request.form.get('tituloLivro')  # Captura o valor do campo títuloLivro
 
-        if not livro_id or not aluno_id:
+        if not livro_id or not aluno_id or not titulo_livro: #titulo tá sendo nulo! Como resolver?
             flash("Selecione um livro e um aluno.")
             return redirect(url_for('alugar'))
 
         livro = Livro.query.get(livro_id)
         if livro:
             if livro.qtdeLivDisponiveis > 0:
-                aluno_id = request.form.get('aluno_id')  # Obtém o aluno_id do formulário
                 aluno = Aluno.query.get(aluno_id)
                 if aluno:
                     livro_alugado = LivrosAlugados(livro=livro, aluno=aluno)
                     livro.qtdeLivDisponiveis -= 1
+
+                    # Atribui o valor do campo títuloLivro ao objeto livro_alugado
+                    livro_alugado.tituloLivro = titulo_livro
 
                     db.session.add(livro_alugado)
                     db.session.commit()
@@ -237,7 +238,6 @@ def alugar():
         return redirect(url_for('livros'))
 
     return render_template("formulario_aluguel.html", livros=livros, alunos=alunos)
-
 
 #Colocar site no ar
 if __name__ == "__main__":

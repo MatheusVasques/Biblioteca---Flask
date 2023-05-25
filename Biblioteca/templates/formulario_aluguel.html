@@ -27,10 +27,16 @@
           <label for="livro_id">Livro:</label>
           <select id="livro_id" name="livro_id" class="form-control">
             {% for livro in livros %}
-            <option value="{{ livro.id }}">{{ livro.tituloLivro }}</option>
+            <option
+              value="{{ livro.idLivro }}"
+              data-titulo="{{ livro.tituloLivro }}"
+            >
+              {{ livro.tituloLivro }}
+            </option>
             {% endfor %}
           </select>
         </div>
+        <input type="hidden" id="tituloLivro" name="tituloLivro" />
         <div class="form-group">
           <label for="aluno_id">Aluno:</label>
           <select id="aluno_id" name="aluno_id" class="form-control">
@@ -42,5 +48,15 @@
         <button type="submit" class="btn btn-primary">Alugar</button>
       </form>
     </div>
+
+    <script>
+      document
+        .getElementById("livro_id")
+        .addEventListener("change", function () {
+          var selectedOption = this.options[this.selectedIndex];
+          var tituloLivro = selectedOption.getAttribute("data-titulo");
+          document.getElementById("tituloLivro").value = tituloLivro;
+        });
+    </script>
   </body>
 </html>
