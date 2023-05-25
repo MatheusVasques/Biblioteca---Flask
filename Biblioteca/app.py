@@ -208,6 +208,12 @@ def alugar():
     if request.method == "POST":
 
         livro_id = request.form.get('livro_id')  # Obtém o livro_id do formulário
+        aluno_id = request.form.get('aluno_id')
+
+        if not livro_id or not aluno_id:
+            flash("Selecione um livro e um aluno.")
+            return redirect(url_for('alugar'))
+
         livro = Livro.query.get(livro_id)
         if livro:
             if livro.qtdeLivDisponiveis > 0:
