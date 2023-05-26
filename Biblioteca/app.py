@@ -136,12 +136,7 @@ def registroaluno():
         return redirect(url_for('login'))
     return render_template("registroaluno.html")
 
-@app.route("/livros_alugados")
-@login_required
-def livros_alugados():
-    user = User.query.get(current_user.id) # Carrega o usuário atual pelo ID
-    livros_alugados = LivrosAlugados.query.filter_by(aluno=user.aluno).all() # Obtém a lista de livros alugados do usuário
-    return render_template("livros_alugados.html", livros=livros_alugados)
+
 
 # Registro funcionário
 @app.route("/registro_funcionario", methods=["GET", "POST"])
@@ -198,6 +193,14 @@ def livros():
     livros = Livro.query.all()
     return render_template("livros.html", livros=livros)
     
+@app.route("/livros_alugados")
+@login_required
+def livros_alugados():
+    livros = Livro.query.all()
+    alunos = Aluno.query.all()
+    livros_alugados = LivrosAlugados.query.all()
+    return render_template("livros_alugados.html", livros_alugados=livros_alugados, livros=livros, alunos=alunos)
+
 @app.route("/alugar", methods=["GET", "POST"])
 @login_required
 def alugar():
@@ -225,6 +228,7 @@ def alugar():
                     livros_alugados.aluno_id = aluno_id
                     livros_alugados.livro_id = livro_id
                     livros_alugados.dataAluguel = date.today()
+                    livros_alugados.dataDevolucao = livros_alugados.dataAluguel + timedelta(days=30)
                     db.session.add(livros_alugados)
                     db.session.commit()
 
