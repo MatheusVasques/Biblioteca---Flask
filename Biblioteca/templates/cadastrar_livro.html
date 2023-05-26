@@ -5,30 +5,111 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Livros</title>
+
+    <!-- Adicionando o estilo do Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      form {
+        width: 300px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 3px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <form action="{{ url_for('cadastrar_livro') }}" method="POST">
-      <label for="titulo">Título:</label>
-      <input type="text" id="titulo" name="tituloLivro" required />
-      <br />
-      <label for="editora">Editora:</label>
-      <input type="text" id="editora" name="editora" required />
-      <br />
-      <label for="ano">Ano:</label>
-      <input type="text" id="ano" name="anoLivro" required />
-      <br />
-      <label for="quantidade">Quantidade:</label>
-      <input type="number" id="quantidadeLivro" name="quantidade" required />
-      <br />
-      <label for="qtde_disponiveis">Quantidade Disponível:</label>
-      <input
-        type="number"
-        id="qtde_disponiveis"
-        name="qtdeLivDisponiveis"
-        required
-      />
-      <br />
-      <input type="submit" value="Cadastrar" />
+      <div class="form-group">
+        <h1>Cadastro de Livros</h1>
+        <label for="titulo">Título:</label>
+        <input
+          type="text"
+          id="titulo"
+          name="tituloLivro"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="editora">Editora:</label>
+        <input
+          type="text"
+          id="editora"
+          name="editora"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="ano">Ano:</label>
+        <input
+          type="text"
+          id="ano"
+          name="anoLivro"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="quantidade">Quantidade:</label>
+        <input
+          type="number"
+          id="quantidadeLivro"
+          name="quantidade"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="qtde_disponiveis">Quantidade Disponível:</label>
+        <input
+          type="number"
+          id="qtde_disponiveis"
+          name="qtdeLivDisponiveis"
+          class="form-control"
+          required
+        />
+      </div>
+      <input type="submit" value="Cadastrar" class="btn btn-primary" />
     </form>
+
+    <!-- Adicionando os scripts do Bootstrap -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
   </body>
 </html>

@@ -30,7 +30,9 @@
             <td value="{{ livro_alugado.livro_id }}">
               {{ livros[livro_alugado.livro_id - 1].tituloLivro }}
             </td>
-            <td>{{ livro_alugado.aluno_id }}</td>
+            <td value="{{ livro_alugado.aluno_id }}">
+              {{ users[livro_alugado.aluno_id - 1].name }}
+            </td>
             <td>{{ livro_alugado.dataAluguel }}</td>
             <td>{{ livro_alugado.dataDevolucao }}</td>
           </tr>

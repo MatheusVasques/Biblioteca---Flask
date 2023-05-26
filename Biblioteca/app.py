@@ -198,8 +198,9 @@ def livros():
 def livros_alugados():
     livros = Livro.query.all()
     alunos = Aluno.query.all()
+    users = User.query.all()
     livros_alugados = LivrosAlugados.query.all()
-    return render_template("livros_alugados.html", livros_alugados=livros_alugados, livros=livros, alunos=alunos)
+    return render_template("livros_alugados.html", livros_alugados=livros_alugados, livros=livros, alunos=alunos, users=users)
 
 @app.route("/alugar", methods=["GET", "POST"])
 @login_required
@@ -246,6 +247,43 @@ def alugar():
         return redirect(url_for('livros'))
 
     return render_template("formulario_aluguel.html", livros=livros, alunos=alunos)
+
+@app.route("/devolver", methods=["GET", "POST"])
+@login_required
+def devolver():
+    if current_user.funcionario is None:
+        flash("Acesso negado. Somente funcionários podem devolver livros.")
+        return redirect(url_for("login"))
+
+    livros_alugados = LivrosAlugados.query.all()
+    livros = Livro.query.all()
+    users = User.query.all()
+
+    if request.method == "POST":
+        livro_alugado_id = request.form.get('livro_alugado_id')
+
+        if not livro_alugado_id:
+            flash("Selecione um livro para devolver.")
+            return redirect(url_for('devolver'))
+
+        livro_alugado = LivrosAlugados.query.get(livro_alugado_id)
+        if livro_alugado:
+            livro = Livro.query.get(livro_alugado.livro_id)
+            if livro:
+                livro.qtdeLivDisponiveis += 1
+                db.session.delete(livro_alugado)
+                db.session.commit()
+
+                flash("Livro devolvido com sucesso!")
+            else:
+                flash("Livro não encontrado.")
+        else:
+            flash("Livro alugado não encontrado.")
+
+        return redirect(url_for('livros_alugados'))
+
+    return render_template("formulario_devolucao.html", livros_alugados=livros_alugados, livros=livros, users=users)
+
 
 #Colocar site no ar
 if __name__ == "__main__":

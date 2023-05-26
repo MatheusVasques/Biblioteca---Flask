@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Devolver Livro</title>
+
+    <!-- Adicionando os estilos do Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 class="mt-4">Devolver Livro Alugado</h1>
+      <form method="POST" action="{{ url_for('devolver') }}">
+        <div class="form-group mt-4">
+          <label for="livro_alugado_id">Selecione o livro alugado:</label>
+          <select
+            class="form-control"
+            id="livro_alugado_id"
+            name="livro_alugado_id"
+          >
+            {% for livro_alugado in livros_alugados %}
+            <option value="{{ livro_alugado.id }}">
+              {{ livros[livro_alugado.livro_id - 1].tituloLivro }} - Alugado
+              por: {{ users[livro_alugado.aluno_id - 1].name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">
+          Devolver Livro
+        </button>
+      </form>
+    </div>
+
+    <!-- Adicionando os scripts do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
