@@ -99,6 +99,16 @@ def login():
 def alunos(nome_aluno):
     return render_template("alunos.html", nome_aluno=nome_aluno)
 
+@app.route("/livros_alugados<nome_aluno>")
+@login_required
+def alugados(nome_aluno):
+    livros = Livro.query.all()
+    alunos = Aluno.query.all()
+    users = User.query.all()
+    livros_alugados = LivrosAlugados.query.all()
+    return render_template("alunos_alugados.html", nome_aluno=nome_aluno, livros_alugados=livros_alugados, livros=livros, alunos=alunos, users=users)
+
+
 @app.route("/funcionarios/<nome_funcionario>")
 @login_required
 def funcionario(nome_funcionario):

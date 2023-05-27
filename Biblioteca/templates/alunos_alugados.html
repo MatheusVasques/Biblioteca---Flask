@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Livros</title>
+    <!-- Adicione o CSS do Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-4 mb-4">Lista de livros Alugados</h1>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Aluno</th>
+            <th>Data de Aluguel</th>
+            <th>Data Devolução</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for livro_alugado in livros_alugados %} {% if
+          livro_alugado.aluno_id == users.user_id %}
+          <tr>
+            <td value="{{ livro_alugado.livro_id }}">
+              {{ livros[livro_alugado.livro_id - 1].tituloLivro }}
+            </td>
+            <td value="{{ livro_alugado.aluno_id }}">
+              {{ users[livro_alugado.aluno_id - 1].name }}
+            </td>
+            <td>{{ livro_alugado.dataAluguel }}</td>
+            <td>{{ livro_alugado.dataDevolucao }}</td>
+          </tr>
+          {% endif %} {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ZfnvmKT+8KwQixw4doC2CBfdDnpwe3QGSu02MD4I4aNC4sT4XNZa6QcMCUJN3K0K"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
