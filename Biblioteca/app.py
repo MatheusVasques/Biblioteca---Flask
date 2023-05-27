@@ -26,17 +26,7 @@ class Livro(db.Model):
     anoLivro = db.Column(db.Integer, nullable=False)
     quantidadeLivros = db.Column(db.Integer, nullable=False)
     qtdeLivDisponiveis = db.Column(db.Integer, nullable=False)
-    #aluno = db.relationship('Aluno', backref=db.backref('livros_alugados', lazy=True))
-''' flask shell
-from app db, User                                             
-from app import db, User
-user = User()
-user.name = "Pedro"
-user.email = "pedro@a.com"
-user.password = "32123"
-db.session.add(user)
-db.session.commit()
-'''
+
 class LivrosAlugados(db.Model):
     __tablename__ = "livros_alugados"
     id = db.Column(db.Integer, primary_key=True)
@@ -64,6 +54,7 @@ class Aluno(db.Model):
     endereco = db.Column(db.String(100))
     telefone = db.Column(db.String(20))
     numeroAluno = db.Column(db.Integer)
+    qtdeLivros = db.Column(db.Integer)
     pendencias = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
@@ -128,6 +119,7 @@ def registroaluno():
         aluno.endereco = request.form["endereco"]
         aluno.telefone = request.form["telefone"]
         aluno.numeroAluno = request.form["numero"]
+        aluno.qtdeLivros = 0 
         aluno.pendencias = False
         aluno.user = user
         db.session.add(aluno)
@@ -225,6 +217,11 @@ def alugar():
             if livro.qtdeLivDisponiveis > 0:
                 aluno = Aluno.query.get(aluno_id)
                 if aluno:
+                     # Verificar se o aluno já alugou 3 livros
+                    if aluno.qtdeLivros >= 3:
+                        flash("Você já alugou o máximo de livros permitido.")
+                        return redirect(url_for('alugar'))
+
                     livros_alugados = LivrosAlugados()
                     livros_alugados.aluno_id = aluno_id
                     livros_alugados.livro_id = livro_id
@@ -236,13 +233,18 @@ def alugar():
                     livro.qtdeLivDisponiveis -= 1
                     db.session.commit()
 
+                    aluno.qtdeLivros += 1 
+                    db.session.commit()
+
                     flash("Livro alugado com sucesso!")
                 else:
                     flash("Aluno não encontrado.")
             else:
                 flash("Não há mais cópias disponíveis deste livro.")
+                return redirect(url_for('alugar'))
         else:
             flash("Livro não encontrado.")
+            return redirect(url_for('alugar'))
 
         return redirect(url_for('livros'))
 
@@ -258,6 +260,7 @@ def devolver():
     livros_alugados = LivrosAlugados.query.all()
     livros = Livro.query.all()
     users = User.query.all()
+    alunos = Aluno.query.all()
 
     if request.method == "POST":
         livro_alugado_id = request.form.get('livro_alugado_id')
@@ -272,6 +275,11 @@ def devolver():
             if livro:
                 livro.qtdeLivDisponiveis += 1
                 db.session.delete(livro_alugado)
+                db.session.commit()
+
+                aluno_id = livro_alugado.aluno_id
+                aluno = Aluno.query.get(aluno_id)
+                aluno.qtdeLivros -= 1 
                 db.session.commit()
 
                 flash("Livro devolvido com sucesso!")
