@@ -178,6 +178,31 @@ def cadastrar_livro():
 
     return render_template("cadastrar_livro.html")
 
+@app.route("/excluir_livro", methods=["GET", "POST"])
+@login_required
+def excluir_livro():
+    if current_user.funcionario is None:
+        flash("Acesso negado. Somente funcionários podem excluir livros.")
+        return redirect(url_for("login"))
+
+    livros = Livro.query.all()
+    
+    if request.method == "POST":
+        livro_id = request.form.get("livro_id")
+        livro = Livro.query.get(livro_id)
+
+        if livro:
+            db.session.delete(livro)
+            db.session.commit()
+            flash("Livro excluído com sucesso!")
+        else:
+            flash("Livro não encontrado.")
+
+        return redirect(url_for("livros"))
+
+    livros = Livro.query.all()
+    return render_template("excluir_livro.html", livros=livros)
+
 # Exibe página com todos os livros cadastrados
 @app.route("/livros")
 @login_required

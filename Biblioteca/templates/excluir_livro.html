@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Excluir Livro</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-5">Excluir Livro</h1>
+
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="alert alert-info mt-4">
+        <ul class="mb-0">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %} {% endwith %}
+
+      <form method="POST" action="{{ url_for('excluir_livro') }}" class="mt-4">
+        <div class="mb-3">
+          <label for="livro_id" class="form-label"
+            >Selecione um livro para excluir:</label
+          >
+          <select id="livro_id" name="livro_id" class="form-select">
+            {% for livro in livros %}
+            <option value="{{ livro.idLivro }}">{{ livro.tituloLivro }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-danger">Excluir</button>
+      </form>
+    </div>
+  </body>
+</html>
