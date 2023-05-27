@@ -317,6 +317,26 @@ def devolver():
 
     return render_template("formulario_devolucao.html", livros_alugados=livros_alugados, livros=livros, users=users)
 
+# Rota para o relatório
+@app.route("/relatorio", methods=["GET"])
+def gerar_relatorio():
+    data_inicial = request.args.get("data_inicial")
+    data_final = request.args.get("data_final")
+
+    livros = Livro.query.all()
+    users = User.query.all()
+
+    if data_inicial and data_final:
+        # Converter as strings de data para objetos datetime
+        data_inicial = datetime.strptime(data_inicial, "%Y-%m-%d")
+        data_final = datetime.strptime(data_final, "%Y-%m-%d")
+
+        movimentacoes = LivrosAlugados.query.filter(
+            LivrosAlugados.dataAluguel.between(data_inicial, data_final)
+        ).all()
+    else:
+        movimentacoes = []
+    return render_template("relatorio.html", movimentacoes=movimentacoes, livros=livros, users=users)
 
 #Colocar site no ar
 if __name__ == "__main__":

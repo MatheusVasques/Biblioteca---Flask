@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório de Movimentações</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-5">Relatório de Movimentações</h1>
+
+      <form action="/relatorio" method="GET" class="mb-3">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="data_inicial" class="form-label">Data Inicial:</label>
+            <input
+              type="date"
+              id="data_inicial"
+              name="data_inicial"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="data_final" class="form-label">Data Final:</label>
+            <input
+              type="date"
+              id="data_final"
+              name="data_final"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">
+              Gerar Relatório
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <h2 class="mt-5">Movimentações</h2>
+
+      {% if movimentacoes %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Aluno</th>
+            <th>Livro</th>
+            <th>Data de Aluguel</th>
+            <th>Data de Devolução</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for movimentacao in movimentacoes %}
+          <tr>
+            <td>{{ movimentacao.id }}</td>
+            <td>{{ users[movimentacao.aluno_id - 1].name }}</td>
+            <td>{{ livros[movimentacao.livro_id - 1].tituloLivro }}</td>
+            <td>{{ movimentacao.dataAluguel }}</td>
+            <td>{{ movimentacao.dataDevolucao }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Nenhuma movimentação encontrada.</p>
+      {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  </body>
+</html>

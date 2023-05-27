@@ -20,25 +20,48 @@
         height: 100vh;
         background-size: cover;
         background-position: center;
-        background-color: #87ceeb;
+        background-image: url("../static/img/biblioteca.jpg");
       }
 
       .card {
-        background-color: #ffffff5f;
+        background-color: #ffffff7d;
         border: 3px solid #20079bad;
         border-radius: 5px;
         padding: 10px;
       }
+
+      .flash-messages {
+        position: absolute;
+        top: 96%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        padding: 10px;
+        z-index: 1;
+      }
+
+      .flash-messages ul.flashes {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .flash-messages ul.flashes li {
+        margin-bottom: 5px;
+      }
     </style>
   </head>
   <body>
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul class="flashes">
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %}
+    </div>
 
     <div class="card" style="width: 30rem">
       <img
@@ -78,12 +101,18 @@
             <input type="submit" class="btn btn-primary" value="Login" />
           </div>
           <div class="text-center mt-3">
-            <p><a href="{{ url_for('registroaluno') }}">Registre-se</a></p>
+            <p>
+              <a href="{{ url_for('registroaluno') }}">
+                <h5>Registre-se</h5>
+              </a>
+            </p>
           </div>
         </form>
         <div class="text-center mt-3">
           <p>
-            <a href="{{ url_for('registrofuncionario') }}">Acesso Restrito</a>
+            <a href="{{ url_for('registrofuncionario') }}">
+              <h5>Acesso Restrito</h5>
+            </a>
           </p>
         </div>
       </div>
