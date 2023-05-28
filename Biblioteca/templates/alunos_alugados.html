@@ -13,33 +13,35 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="mt-4 mb-4">Lista de livros Alugados</h1>
+      <h1 class="mt-4 mb-4">Lista de Livros Alugados</h1>
 
       <table class="table">
-        <thead>
+        <thead class="table-dark">
           <tr>
-            <th>ID</th>
-            <th>Aluno</th>
-            <th>Data de Aluguel</th>
-            <th>Data Devolução</th>
+            <th scope="col">Título do Livro</th>
+            <th scope="col">Aluno</th>
+            <th scope="col">Data de Aluguel</th>
+            <th scope="col">Data Devolução</th>
           </tr>
         </thead>
         <tbody>
           {% for livro_alugado in livros_alugados %} {% if
-          livro_alugado.aluno_id == users.user_id %}
+          users[livro_alugado.aluno_id - 1].name == nome_aluno %}
           <tr>
-            <td value="{{ livro_alugado.livro_id }}">
-              {{ livros[livro_alugado.livro_id - 1].tituloLivro }}
-            </td>
-            <td value="{{ livro_alugado.aluno_id }}">
-              {{ users[livro_alugado.aluno_id - 1].name }}
-            </td>
+            <td>{{ livros[livro_alugado.livro_id - 1].tituloLivro }}</td>
+            <td>{{ users[livro_alugado.aluno_id - 1].name }}</td>
             <td>{{ livro_alugado.dataAluguel }}</td>
             <td>{{ livro_alugado.dataDevolucao }}</td>
           </tr>
           {% endif %} {% endfor %}
         </tbody>
       </table>
+
+      <a
+        href="{{ url_for('alunos', nome_aluno=nome_aluno) }}"
+        class="btn btn-primary"
+        >Voltar à página de alunos</a
+      >
     </div>
 
     <script

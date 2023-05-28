@@ -1,61 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Funcionario</title>
 
-    <!-- Adicionando os estilos do Bootstrap -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funcionário</title>
 
-  <body>
-    <div
-      class="container d-flex flex-column align-items-center justify-content-center vh-100"
-    >
-      <h1 class="mt-4">Acesso dos Funcionários</h1>
-      <a href="{{ url_for('cadastrar_livro') }}" class="btn btn-primary mt-4"
-        >Cadastro de Livro</a
-      >
-      <p class="mt-4">Funcionário: {{ nome_funcionario }}</p>
-      <a href="{{ url_for('livros') }}" class="btn btn-primary mt-4"
-        >Livro do catálogo</a
-      >
-      <p class="mt-4">
-        <a href="{{ url_for('alugar') }}" class="btn btn-primary"
-          >Alugar Livro</a
-        >
-      </p>
-      <p class="mt-4">
-        <a href="{{ url_for('livros_alugados') }}" class="btn btn-primary"
-          >Livros Alugados</a
-        >
-      </p>
-      <p class="mt-4">
-        <a href="{{ url_for('devolver') }}" class="btn btn-primary"
-          >Devolução de Livros</a
-        >
-      </p>
-      <p class="mt-4">
-        <a href="{{ url_for('excluir_livro') }}" class="btn btn-primary"
-          >Exclusão de Livros</a
-        >
-      </p>
+  <!-- Adicionando os estilos do Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
 
-      <p class="mt-4">
-        <a href="{{ url_for('gerar_relatorio') }}" class="btn btn-primary"
-          >Visualizar relatório por range de data</a
-        >
-      </p>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Acesso dos Funcionários</h1>
+    <div class="container text-center mt-5">
+      <p class="text-center mt-5"><h5>Funcionário: {{ nome_funcionario }}</h5></p>
     </div>
 
-    <!-- Adicionando os scripts do Bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  </body>
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6 col-lg-4 mb-4">
+        <a href="{{ url_for('cadastrar_livro') }}" class="btn btn-primary btn-block">Cadastro de Livro</a>
+      </div>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <a href="{{ url_for('livros') }}" class="btn btn-primary btn-block">Livro do catálogo</a>
+      </div>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <a href="{{ url_for('alugar') }}" class="btn btn-primary btn-block">Alugar Livro</a>
+      </div>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <a href="{{ url_for('livros_alugados') }}" class="btn btn-primary btn-block">Livros Alugados</a>
+      </div>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <a href="{{ url_for('devolver') }}" class="btn btn-primary btn-block">Devolução de Livros</a>
+      </div>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <a href="{{ url_for('gerar_relatorio') }}" class="btn btn-primary btn-block">Visualizar relatório por range de data</a>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="{{ url_for('login') }}" class="btn btn-primary">Voltar ao login</a>
+    </div>
+    
+
+  <!-- Adicionando os scripts do Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
 </html>

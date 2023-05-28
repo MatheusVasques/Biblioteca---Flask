@@ -254,7 +254,7 @@ def alugar():
                 if aluno:
                      # Verificar se o aluno já alugou 3 livros
                     if aluno.qtdeLivros >= 3:
-                        flash("Você já alugou o máximo de livros permitido.")
+                        flash("O aluno selecionnado já alugou o máximo de livros permitido.")
                         return redirect(url_for('alugar'))
 
                     livros_alugados = LivrosAlugados()
